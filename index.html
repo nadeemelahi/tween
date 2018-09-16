@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>WebScripts.biz</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="shortcut icon" type="image/x-icon" href="../../img/faviconPuzzle.jpg">
+      <style>
+
+body{ 
+   margin: 0; padding: 0;
+}
+#pageWrapper {
+   max-width: 600px; margin: auto; padding: 4px;
+   font-family: serif; color: #2B1A00;
+}
+h1,h2,h3,#copy {
+   font-family: sans-serif;
+}
+#firstH1,#copy {
+   color: gray; background: black;
+   margin: 0; padding: 1em;
+}
+#secondH1 { text-align: center; color: #683E00; }
+h2, h3 { color: #683E00; margin: 50px auto 30px auto; }
+.dlD { text-align: center; margin: 50px auto; }
+.btn {
+   display: block;
+   width: 270px; height: 40px;
+   padding-top: 20px; margin: 10px auto;
+   text-decoration: none;
+   border: 1px solid blue; border-radius: 5px;
+   font-size: 1.2em;
+   color: blue;
+   font-family: sans-serif;
+}
+.btn:hover { background: #ddf; }
+code {
+   display: block; font-size: 1.2em; font-family: monospace;
+   margin-left: 20px; padding-left: 10px;
+   border-left: 1px solid #2B1A00;
+}
+.tabSm { padding-left: 50px; }
+.tabLrg { padding-left: 100px; }
+.tabXL { padding-left: 150px; }
+.pink { color: #FF00A2; }
+.purple { color: purple; }
+.cadetBlue { color: cadetBlue; }
+.blue { color: blue; }
+.orange { color: orange; }
+.violet { color: violet; }
+.red { color: red; }
+.comment { color: #8698A9; }
+#copy {
+   font-size: 0.8em;
+   text-align: right;
+}
+.redDivWrapper{ background: black; width: 100%; height: 100px; }
+.ctrls{ width: 385px; margin: 5px auto; }
+.ctrls > button{
+   display: inline-block;
+   padding: 4px;
+   background: none;
+   border: 1px solid blue;
+   border-radius: 5px;
+   width: 125px;
+   color: blue;
+}
+.ctrl > button:hover{
+   background: #ddf;
+}
+#redBoxStill, #redDiv, #redDivLoop, #redDivReverse {
+   width: 100px; height: 100px;
+   background: red; 
+}
+#redDiv, #redDivLoop, #redDivReverse {
+   margin-left: 100px;
+}
+h3 #timeOutput , 
+h3 #timeOutputLoop, 
+h3 #timeOutputReverse { 
+   color: red; 
+}
+      </style>
+   </head>
+   <body>
+      <h1 id="firstH1">JavaScript Plugin/Script</h1>
+      <div id="pageWrapper">
+	 <h1 id="secondH1">Tween'ing your Animations</h1>
+
+	 <div class="dlD">
+	    <h2>Download:</h2>
+	    <a class="btn" href="Tween.js">Tween.js</a>
+	    <a class="btn" href="Tween.min.js">Tween.min.js</a>
+	 </div>
+
+	 <h2>Description</h2>
+	 <p>This script provides tweening to your animations using RAF. A tween is defined by a duration time length over which a value will transition successively from a start value to an end value. This script will calculate the current value of a property, between a pair of end point values, over time, upto a duration length of time. </p>
+	 <p>This script works on all modern browsers including IE9 and above.</p>
+	 <h2>Dependency</h2>
+	 <p>This script depends on and includes the <a href="../timer/">timer T{}</a> script. If you are using this Tween object for your animations, you will not need to use <a href="../timer/">timer T{}</a> object directly. If you already have the <a href="../timer/">timer T{}</a> included in your program, be sure to delete it from this script. </p>
+	 <h2>What is Tweening?</h2>
+	 <p> Tweening provides great power to animation programming. The word tweening is a play on the phrase "in between" and refers to calculating points in between two end points with time. A Time zero corresponds to the start value and the end value corresponds to when the full duration of time has past. </p>
+	 <p> </p>
+
+	 <h2>Usage</h2>
+	 <p>Instantiate a Tween instance with the arguments: start_value, end_value, and time_duration. Begin the tweening by calling the init() method, passing in the object you wish to animate. </p>
+	 <p>The object you wish to animate must be designed and coded to include a setPosition() method  and a done() method. The setPosition() will be called by Tween successively upon <a href="../timing/">timing T{}</a> ticks(). Where as <a href="../timing/">timing T{}</a> RAF tick() method calls are passed the elapsed time between frame, the Tween object will use the elapsed time to calculate the current position for you and pass the result to the animating object's setPosition() method.</p>
+
+	 <h2>Usage Example</h2>
+	 <p>Consider the following red box of size <span class="pink">100X100px</span> with a margin-left value of <span class="pink">100px</span>, inside a wrapper div that is <span class="pink">600px</span> wide. Suppose we wish to animate the margin-left property from 100&rarr;400px over 5secs(5000ms).</p>
+	 
+	 <div class="redDivStill">
+	    <div id="nonAnimatingRedDiv"></div>
+	 </div>
+
+	 <p>Instantiating a Tween object:</p>
+	 <code>var <span class="pink">redTW</span> = <span class="red">new</span> Tween();</code>
+	 <p>We would need to prepare an object with a setPosition() method and a done() method and pass that object to the init() method such as the following:</p>
+	 <code>var <span class="pink">myTweenObj</span> = {</code>
+	 <code class="tabSm"></code>
+	 <code class="tabSm"><span class="pink">redDiv</span>:document.getElementById(<span class="pink">"redDiv"</span>),</code>
+	 <code class="tabSm"><span class="pink">setPosition</span>:function(<span class="red">position</span>){},</code>
+	 <code class="tabLrg"><span class="comment">// updates/ticks</span></code>
+	 <code class="tabLrg">this.<span class="pink">redBox</span>.style.<span class="orange">marginLeft</span> = <span class="red">position</span> + "px";</code>
+	 
+	 <code class="tabSm">},</code>
+	 <code class="tabSm"><span class="pink">done</span>:function(){</code>
+	 <code class="tabLrg"><span class="comment">// animation is done</span></code>
+	 <code class="tabSm">}</code>
+	 <code>};</code>
+	 <p>Now to configure your Tween object with the start value, end value, duration and the object you have prepared for animation. </p>
+	 <code><span class="pink">redTW</span>.config(<span class="pink">100, 400, 5000, myTweenObj</span>);</code>
+
+	 <h3>Result: <span id="timeOutput">0/5000, 0%, margin-left: 100px</span></h3>
+	 <div class="redDivWrapper">
+	    <div id="redDiv"></div>
+	 </div>
+	 <div class="ctrls">
+	    <button id="redTWstart">redTW.start()</button>
+	    <button id="redTWstop">redTW.stop()</button>
+	    <button id="redTWreset">redTW.reset()</button>
+	 </div>
+
+	 <h3>Looping</h3>
+	 <p>If you want the animation to continuously loop, call reset() &amp; play() in the done() method.</p>
+
+	 <code class="tabSm"><span class="pink">done</span>:function(){</code>
+	 <code class="tabLrg"><span class="comment">// animation is done</span></code>
+	 <code class="tabLrg"><span class="pink">redTW</span>.reset();</code>
+	 <code class="tabLrg"><span class="pink">redTW</span>.start();</code>
+	 <code class="tabSm">}</code>
+
+	 <h3>Result(Looping): <span id="timeOutputLoop">0/5000, 0%, margin-left: 100px</span></h3>
+	 <div class="redDivWrapper">
+	    <div id="redDivLoop"></div>
+	 </div>
+	 <div class="ctrls">
+	    <button id="redTWstartLoop">redTW.start()</button>
+	    <button id="redTWstopLoop">redTW.stop()</button>
+	    <button id="redTWresetLoop">redTW.reset()</button>
+	 </div>
+
+
+	 <h3>Reversing</h3>
+	 <p>If you want the animation to go back and forth reversing each time it complete, re-configure the Tween object in the done() method with the start and end values reversed.</p>
+
+	 <code class="tabSm"><span class="pink">endpoints</span>:[100,400],</code>
+	 <code class="tabSm"><span class="pink">done</span>:function(){</code>
+	 <code class="tabLrg"><span class="comment">// animation is done</span></code>
+	 <code class="tabLrg">this.endpoints.reverse();</code>
+	 <code class="tabLrg"><span class="pink">redTW</span>.config(</code>
+	 <code class="tabXL">this.endpoints[0],</code>
+	 <code class="tabXL">this.endpoints[1],</code>
+	 <code class="tabXL">5000,</code>
+	 <code class="tabXL">this</code>
+	 <code class="tabLrg">);</code>
+	 <code class="tabLrg"><span class="pink">redTW</span>.reset();</code>
+	 <code class="tabLrg"><span class="pink">redTW</span>.start();</code>
+	 <code class="tabSm">}</code>
+
+	 <h3>Result<br>(Reversing): <span id="timeOutputReverse">0/5000, 0%, margin-left: 100px</span></h3>
+	 <div class="redDivWrapper">
+	    <div id="redDivReverse"></div>
+	 </div>
+	 <div class="ctrls">
+	    <button id="redTWstartReverse">redTW.start()</button>
+	    <button id="redTWstopReverse">redTW.stop()</button>
+	    <button id="redTWresetReverse">redTW.reset()</button>
+	 </div>
+
+	 <h2>Final Notes</h2>
+	 <p>Tween.js &amp; Tween.min.js download file links are of a small file size. Tween.js is just a few lines. And so to reduce the number of file gets() your web page requires, I would advise to just copy-paste the code in with the rest of your JavaScript. </p>
+	 <p>The minified script was minified using the <a href="https://closure-compiler.appspot.com">closure compiler</a> with the Optimization level set to (O)Whitespace only, and all formatting options unchecked.</p>
+	 <p>This page and all it contents are also posted at the following github link: <a href="https://github.com/nadeemelahi/tween">github.com/nadeemelahi/tween</a>.<p>
+
+	 <h2>License</h2>
+	 <p>This Tween script is licensed under gpl v2. Free for business or personal use. Not for re-sale. Please release modified or improved versions under gpl v2 license too.</p>
+
+	 <div class="dlD">
+	    <h2>Download: <br>
+	       (same as top of page)</h2>
+	    <p><a class="btn" href="Tween.js">Tween.js</a></p>
+	    <p><a class="btn" href="Tween.min.js">Tween.min.js</a></p>
+	 </div>
+
+      </div>
+
+      <p id="copy">Copyright 2018 &copy; nadeem.elahi@gmail.com</p>
+
+      <script type="text/javascript" src="Tween.min.js"></script>
+      <script type="text/javascript">
+
+function empty($){
+   while($.firstChild)
+      $.removeChild($.firstChild);
+}
+var tm;
+function setTime($,timeUpdate){
+   empty($);
+   tm = document.createTextNode(timeUpdate);
+   $.appendChild(tm);
+}
+
+var $timeOutput = document.getElementById("timeOutput");
+var myTweeningObj = {
+   redDiv : document.getElementById("redDiv"),
+   setPosition:function(position){
+      this.redDiv.style.marginLeft = position + "px";
+
+      setTime( $timeOutput,
+	    redTW.totalElapsed 
+	    + "/" + redTW.dur
+	    + ", " + (redTW.percent*100>>0) + "%"
+	    + ", margin-left:" 
+	    + (redTW.currPos>>0) + "px" );
+   },
+   done:function(){
+      console.log("myTweeningObj.done()");
+      running = false;
+   }
+}
+var redTW = new Tween();
+redTW.config(
+      100,400,5000,
+      myTweeningObj);
+
+
+
+var $timeOutputLoop = document.getElementById("timeOutputLoop");
+var myTweeningObjLoop = {
+   redDivLoop : document.getElementById("redDivLoop"),
+   setPosition:function(position){
+      this.redDivLoop.style.marginLeft = position + "px";
+
+      setTime( $timeOutputLoop,
+	    redTWLoop.totalElapsed 
+	    + "/" + redTWLoop.dur
+	    + ", " + (redTWLoop.percent*100>>0) + "%"
+	    + ", margin-left:" 
+	    + (redTWLoop.currPos>>0) + "px" );
+   },
+   done:function(){
+      console.log("myTweeningObj.done(), Loop");
+      redTWLoop.reset();
+      redTWLoop.start();
+   }
+}
+var redTWLoop = new Tween();
+redTWLoop.config(
+      100,400,5000,
+      myTweeningObjLoop);
+
+
+var $timeOutputReverse = document.getElementById("timeOutputReverse");
+var myTweeningObjReverse = {
+   redDivReverse : document.getElementById("redDivReverse"),
+   setPosition:function(position){
+      this.redDivReverse.style.marginLeft = position + "px";
+
+      setTime( $timeOutputReverse,
+	    redTWReverse.totalElapsed 
+	    + "/" + redTWReverse.dur
+	    + ", " + (redTWReverse.percent*100>>0) + "%"
+	    + ", margin-left:" 
+	    + (redTWReverse.currPos>>0) + "px" );
+   },
+   endpoints:[100,400],
+   done:function(){
+      console.log("myTweeningObj.done(), Reverse");
+      this.endpoints.reverse();
+      redTWReverse.config(
+	    this.endpoints[0], 
+	    this.endpoints[1],
+	    5000,
+	    this);
+      redTWReverse.reset();
+      redTWReverse.start();
+   }
+}
+var redTWReverse = new Tween();
+redTWReverse.config(
+      100,400,5000,
+      myTweeningObjReverse);
+
+
+// Start Animating
+function clicks_h(e){
+   if(!e) var e = window.event;
+   if(e.target.id==="redTWstart"){
+      redTW.start();
+   } else if(e.target.id==="redTWstop"){
+      redTW.stop();
+   } else if(e.target.id==="redTWreset"){
+      redTW.reset();
+
+   } else if(e.target.id==="redTWstartLoop"){
+      redTWLoop.start();
+   } else if(e.target.id==="redTWstopLoop"){
+      redTWLoop.stop();
+   } else if(e.target.id==="redTWresetLoop"){
+      redTWLoop.reset();
+    
+   } else if(e.target.id==="redTWstartReverse"){
+      redTWReverse.start();
+   } else if(e.target.id==="redTWstopReverse"){
+      redTWReverse.stop();
+   } else if(e.target.id==="redTWresetReverse"){
+      redTWReverse.reset();
+   } 
+} 
+document.body.addEventListener(
+      "click",clicks_h,false);
+
+
+   
+      </script>
+
+   </body>
+</html>
